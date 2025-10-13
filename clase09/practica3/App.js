@@ -1,14 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import Imagee from './src/Components/Imagee';
-import ImageRemota from './src/Components/ImageRemota';
+import ProductList from './src/Screens/ProductList';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Probando imágenes</Text>
-      <Imagee/>
-      <ImageRemota/>
+      <Text style={styles.text} > FlatList </Text>
+      <ProductList/>
     </View>
   );
 }
@@ -25,3 +23,4 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   }
 });
+
