@@ -4,20 +4,19 @@ import { FlatList, View, Text, Image, StyleSheet } from "react-native";
 function Card(props) {
   return (
     <FlatList
-      data={props.products}
+      data={props.characters}
       keyExtractor={(item) => item.id.toString()}
       style={styles.flatlist}
       renderItem={({ item }) => (
         <View style={styles.card}>
+          <Text style={styles.title}>{item.name}</Text>
+          <Text style={styles.description}>Especie: {item.species}</Text>
+          <Text style={styles.price}>Género: {item.gender}</Text>
           <Image
             source={{ uri: item.image }}
             style={styles.image}
             resizeMode="contain"
           />
-          <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.description}>{item.description}</Text>
-          <Text style={styles.price}>Precio:{item.price}</Text>
-          <Text style={styles.category}>Categoría: {item.category}</Text>
         </View>
       )}
     />
@@ -46,22 +45,21 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: "bold",
-    fontSize: 16,
-    marginBottom: 5,
+    fontSize: 20,
+    marginBottom: 10,
+    textAlign: "center", 
+
   },
   description: {
-    fontSize: 14,
+    fontSize: 15,
     marginBottom: 5,
     color: "#333",
+    textAlign: "center", 
   },
   price: {
-    fontSize: 16,
-    color: "green",
+    fontSize: 15,
     marginBottom: 5,
-  },
-  category: {
-    fontSize: 14,
-    color: "#555",
+    textAlign: "center", 
   },
 });
 

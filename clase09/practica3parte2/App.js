@@ -5,7 +5,7 @@ import ProductsAll from './src/Screens/ProductsAll';
 export default function App() {
   return (
     <View style={styles.container}>
-      <ProductsAll/>
+      <ProductsAll />
     </View>
   );
 }
@@ -13,8 +13,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
   },
 });
