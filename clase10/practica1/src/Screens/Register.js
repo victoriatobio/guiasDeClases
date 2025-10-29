@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { Text, View, Pressable, TextInput } from 'react-native';
+import { db, auth } from '../firebase/config';
 
 class Register extends Component{
     constructor(props){
@@ -8,15 +9,35 @@ class Register extends Component{
             email: "",
             username: "",
             password: "",
+            registered: false,
+            error: "",
         }
     }
 
-    onSubmit(){
-        console.log('Datos del usuario:')
-        console.log('Email:', this.state.email)
-        console.log('Usuario:', this.state.username)
-        console.log('Contraseña:', this.state.password)
+    onSubmit(email, username, password){
+        auth.createUserWithEmailAndPassword(email, password)
+        .then(response => {
+            this.setState({registered: true});
+            console.log(response);
+            console.log("Datos del usuario")
+            console.log("email:", this.state.email)
+            console.log("user name:", this.state.userName)
+            console.log("password:", this.state.password)
+            this.props.navigation.navigate('Login')
+        })
+            db.collection('users').add({
+                userName: this.state.username,
+                email: this.state.email,
+                createdAt: Date.now(),
+            })
+            .then()
+            .catch( e => console.log(e))
+        
+        .catch(error => {
+            this.setState({error: 'Fallo en el registro.'})
+        })
     }
+    
 
     render(){
         return (
@@ -44,8 +65,9 @@ class Register extends Component{
                     onChangeText={ text => this.setState({password:text}) }
                     value={this.state.password}
                 /> 
-                <Pressable style={styles.button} onPress={() => this.onSubmit()}>
-                    <Text style={styles.buttonText}> Submit </Text> 
+
+                <Pressable style={styles.button} onPress={() => this.onSubmit(this.state.email, this.state.username, this.state.password)} >
+                    <Text style={styles.buttonText} > Register </Text> 
                 </Pressable> 
                 <Pressable style={styles.button} onPress={ ()=> this.props.navigation.navigate('Login')}>
                     <Text style={styles.buttonText} >Ir al Login</Text>

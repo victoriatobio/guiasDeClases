@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { Text, View, Pressable, TextInput } from 'react-native';
+import { auth } from '../firebase/config';
 
 class Login extends Component{
     constructor(props){
@@ -7,14 +8,29 @@ class Login extends Component{
         this.state={
             email: "",
             password: "",
+            loggedIn: false,
+            error: "",
         }
     }
 
-    onSubmit(){
-        console.log('Datos del usuario:')
-        console.log('Email:', this.state.email)
-        console.log('Contraseña:', this.state.password)
-    }
+    onSubmit (){
+        if (this.state.email.includes("@") == false) {
+        
+            this.setState({ error: "Email mal formateado" });
+          } 
+        else if (this.state.password.length < 6) {
+            this.setState({ error: "La contraseña debe tener al menos 6 caracteres" });
+          } 
+        else {
+            auth.signInWithEmailAndPassword(this.state.email, this.state.password)
+            .then((response) => {
+                this.props.navigation.navigate('HomeMenu');
+            })
+            .catch(error => {
+                console.log('Error al loguear:', error.message);
+                this.setState({error: error.message});
+            })
+      }}
 
     render(){
         return (
@@ -36,14 +52,12 @@ class Login extends Component{
                     value={this.state.password}
                 /> 
                 <Pressable style={styles.button} onPress={() => this.onSubmit()}>
-                    <Text style={styles.buttonText}> Submit </Text> 
+                    <Text style={styles.buttonText}> Login </Text> 
                 </Pressable> 
                 <Pressable style={styles.button} onPress={() => this.props.navigation.navigate('Register')}>
                     <Text style={styles.buttonText}> Ir al registro</Text>
                 </Pressable>
-                <Pressable style={styles.button} onPress={() => this.props.navigation.navigate('HomeMenu')}>
-                    <Text style={styles.buttonText} >Entrar en la app</Text>
-                </Pressable>
+                <Text style={styles.errorText}>{this.state.error}</Text>
             
             </View>
           );
@@ -59,7 +73,7 @@ const styles = {
         padding: 20,
     },
     input: {
-        width: '40%', // Changed from '100%' to '80%'
+        width: '40%', 
         padding: 15,
         borderWidth: 1,
         borderColor: 'lightblue',
@@ -71,7 +85,7 @@ const styles = {
         padding: 10, 
         backgroundColor: 'lightblue',
         borderRadius: 10,
-        width: '40%', // Changed from '100%' to '80%'
+        width: '40%', 
         alignItems: 'center',
         marginBottom: 10,
     },
